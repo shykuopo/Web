@@ -1,0 +1,115 @@
+<!doctype html>
+<html>
+<head>
+    <title>CodePlayer</title>
+
+    <meta charset="utf-8" />
+    <meta http-equiv="Content-type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    
+	
+	<script type="text/javascript" src="jquery.min.js"></script>
+	
+	<link rel="stylesheet" type="text/css" href="CodePlayer.css"/>
+	
+	
+	
+</head>
+
+<body>
+    <div id="wrapper">
+	
+	    <div  id="menuBar">
+		
+		    <div id="logo">
+			    CodePlayer
+			</div>
+			
+			 <div id="buttonDiv">
+			 
+			    <button id="runButton">Run</button>
+				
+			</div>
+			
+			<ul id="toggles">
+			    
+				<li class="toggle selected first">HTML</li>
+				
+				<li class="toggle">CSS</li>
+				
+				<li class="toggle">JS</li>
+				
+				<li class="toggle selected last" style = "border:none">Result</li>
+			</ul>
+			
+		</div>
+		<div class="clear"></div>
+		
+		<div class="codeContainer" id="HTML">
+		
+		    <div class="codeLabel">HTML</div>
+			
+		    <textarea id="htmlCode" placeholder="Please type here..."></textarea>
+		
+		</div>
+		
+		<div class="codeContainer" id="CSS">
+		
+		    <div class="codeLabel">CSS</div>
+			
+		    <textarea id="cssCode" placeholder="Please type here..."></textarea>
+		
+		</div>
+		
+		<div class="codeContainer" id="JS">
+		
+		    <div class="codeLabel">JS</div>
+			
+		    <textarea id="jsCode" placeholder="Please type here..."></textarea>
+		
+		</div>
+		
+		<div class="codeContainer" id="Result">
+		
+		    <div class="codeLabel" >Result</div>
+			
+		    <iframe id="resultFrame"></iframe>
+		
+		</div>
+		
+	</div>
+    
+	
+    <script>
+	    var windowHeight = $(window).height();
+		var menuBarHeight = $("#menuBar").height();
+		var codeContainerHeight = windowHeight-menuBarHeight;
+		$(".codeContainer").height(codeContainerHeight+"px");
+		
+		$(".toggle").click(function(){
+		    $(this).toggleClass("selected");
+			
+			var activeDiv = $(this).html();
+			$("#"+activeDiv).toggle();
+			
+			var showingDiv=$(".codeContainer").filter(function(){
+			
+			    return($(this).css("display")!="none");
+				
+			}).length;
+			
+			
+			var width = 100/showingDiv;
+			$(".codeContainer").css("width",width+"%");
+			
+		
+		});
+		
+		$("#runButton").click(function(){
+		    $("iframe").contents().find("html").html("<style>"+$("#cssCode").val()+"</style>"+$("#htmlCode").val());
+		
+		document.getElementById("resultFrame").contentWindow.eval($("#jsCode").val());
+		});
+	</script>
+</body>
+</html>
